@@ -1,2 +1,3 @@
-var myHeading = document.querySelector('h1');
-myHeading.textContent = 'Hello world!';
+function link(url, name) {
+    window.open(url, name);
+}
