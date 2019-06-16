@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+  <head>
+    <title>delete</title>
+  </head>
+  <header>
+    <nav>
+      <ul>
+	<h1>Projects</h1>
+	<li><a href="index.html">Home</a></li>
+	<li><a href="projects.html">Projects</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <h3>Quick Glance</h3>
+  Start: Jul. 2019<br>
+  Language: C<br>
+  <a href="https://www.github.com/royces9/delete" target="_blank">Github</a>
+  
+  <h3>Summary</h3>
+  An <code>rm</code> alternative.
+  Moves files to <code>~/.trash</code>, the contents can be
+  deleted permanently via <code>del -empty</code>.
+  
+  <h3>Background and Motivation</h3>
+  After switching to Linux from using Windows for most of my life, I was somewhat
+  eager to use the terminal.
+
+  Many people say that using the terminal is better and faster and more efficient,
+  so I spent the time to learn most of the commands I would need.
+
+  One thing that stood out to me was <code>rm</code>.
+
+  You have to be careful, don't alias it to something else,
+  don't alias it with the warning prompt, etc.
+
+  So I took that advice and tried a bash script that would move things to a
+  trash directory.
+
+  I don't really remember why I didn't stick with it, nor do I remember why I
+  didn't just make my own script, but here we are.
+
+  I must have felt that using a bash script was dirty or something? I'm not sure.
+
+  Anyway, it's something that I actually use almost daily, so I guess it's good that
+  it hasn't completely bricked my system yet.
+
+  <h3>Things Learned and Problems</h3>
+  This program is super simple, and I think I did a pretty good job of making
+  everything small and easy to test (although I didn't do any  unit testing or
+  anything like that).
+
+  The most important thing I learned in this project are the existence of some
+  of the Linux specific headers (
+  <code>dirent.h</code>, 
+  <code>fcntl.h</code>,
+  <code>sys/stat.h</code>,
+  <code>unistd.h</code>,
+  were the headers I used).
+
+  It was a good introductory project into using them and doing some
+  file system level manipulation (although nothing with inodes thank god).
+
+  Another interesting thing to note, is that during my operating
+  sytems class, I learned about the basic Unix syscalls
+  <code>fork()</code> and <code>exec()</code>.
+
+  I then implemented the same thing, but using those syscalls as a
+  basis instead of <code>rename()</code> and <code>unlink()</code>.
+
+  I honestly think it's worse, since it's creating a whole new process for
+  every single argument, but I haven't actually tested it, and I personally only
+  use one argument normally anyway so, one new process isn't that bad anyway.
+
+  Anyhow, there's about 100 fewer lines of code, so that might make it easier
+  to read.<br>
+
+  One thing that I can't get right with this program is using sudo.
+
+  I rarely ever need to use <code>sudo del</code>, so it's a low priority problem
+  for me, but there are strange segfaults or permission issues when I
+  <code>del -empty</code> involving sudo.
+
+  Other than that, because of the nature of the things I am deleting, I rarely actually
+  check if items are being deleted properly (being sent to .trash), and that's no good,
+  so recently I've been trying to test that things are being deleted properly.
+
+  I have some shell scripts to check some basic stuff, like if directories are moved correctly,
+  or that duplicate names are handled correctly, but nothing too robust for testing.
+</html>

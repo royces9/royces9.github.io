@@ -1,0 +1,261 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Calculator</title>
+  </head>
+
+  <header>
+    <nav>
+      <ul>
+	<h1>Calculator</h1>
+	<li><a href="index.html">Home</a></li>
+	<li><a href="projects.html">Projects</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <body>
+    <h3>Quick Glance</h3>
+    Start: Feb. 2017<br>
+    Languages: C, Python (testing)<br>
+    <a href="https://www.github.com/royces9/calculator" target="_blank">Github</a>
+    
+    <h3>Summary</h3>
+    A calculator for use in terminals.
+
+    Supports basic arithmetic (addition, subtraction, multiplication, division),
+    exponents (exponentiation, logarithms, square roots),
+    trigonometry (sin(), cos(), tan()),
+    numerical approximations (derivatives, integrals, equation solver),
+    and more.
+
+    Written for use in Linux, and requires the GNU Readline library to run,
+    and GNU make to build.
+
+    Testing after changes are done by hand if small.
+
+    Bigger changes (i.e. changes to parsing) are tested
+    with test cases using Python.
+
+    Memory correctness is checked with Valgrind, and deubgging is done
+    with print statements/GDB.
+
+    <h3>Background and Motivation</h3>
+    This was my first programming project.
+
+    I was trying out Linux around the beginning of 2017 because Windows 10
+    was too frustrating for me too use.
+
+    Since I didn't really play games anymore anyway, I decided to try out Debian.
+
+    Now, I had actually taken an intro to C course my first year of undergrad, and
+    actually really enjoyed it (EECS 10 with Sheu). 
+
+    For some reason, I realized that if I'm on Linux, I would have a C compiler, and
+    that I'd have no excuse to not know how to program (looking back this is kind of
+    stupid, but it doesn't matter now I guess).
+
+    I decided to start dabbling here and there with C, just writing small test programs
+    to get used to syntax, and the compiling toolchain; although at this point it was
+    basically stuff like: <code>gcc test.c -o test</code>.
+
+    At some point, I wanted to make something more interesting, but I couldn't think of
+    anything at the top of my head.<br>
+
+    As I was doing homework, I had to do some quick arithmetic, nothing too difficult,
+    but not something I could do mentally.
+
+    So I opened up a tab on my browser with Google and put in my query and got my answer.
+
+    I reflexively close the tab, get to the next question, re-open another Google tab, and
+    repeat.
+
+    The easy solution is to not close the tab, but if I have a tab open with, let's say
+    physical data for fluid densities (chemical engineering btw), switching tabs is also
+    kind of annoying.
+
+    I somewhat had a solution for this on my laptop (which also had Linux installed), where
+    I had a student license of MATLAB installed.
+
+    This actually did what I wanted perfectly, you can actually open MATLAB without a GUI,
+    and just have the CLI, but it was frustratingly slow, and if I only wanted to do something
+    simple like 45 * 34, it took too long for what I got out of it.
+
+    With these two annoyances, and a want for a project, I started work on the calculator.
+
+    As an aside, I could have possibly used Octave, software similar to MATLAB, but free; or used
+    a Python shell with small modifications (i.e. from import math *, to get rid of namespace), but
+    those didn't come to mind at the time (I even knew about Octave).
+
+    <h3>Things Learned and Problems</h3>
+    As this was my first programming project, there was a lot to learn.
+
+    I'll split things up into smaller sections within this section, in order of
+    how important the skills were, and any problems I ran into.
+    
+    <h4>C</h4>
+    Starting off, like any beginner, I had no idea what I was doing.
+
+    I had one class of intro C four years prior, so I was mostly working with knowledge
+    I retained from that class, it's not much, but I had a start.
+
+    Also unlike most people nowadays, I had zero experience in higher level languages like
+    Python and Java.
+
+    I think this ended up helping me a little bit since I didn't already have a mental model of
+    how programs are "supposed" to work. <br>
+
+    The first issue I ran into was handling order of operations.
+
+    I had no idea how to start with differentiating between 1 + 2 * 3 and 1 * 2 + 3, how do I
+    tell my program program you have to do * first in that case?
+
+    Many of my friends (all from osu! UCI) were computer science majors so I figured I'd ask them,
+    which left me with most questions after they'd start talking about grammars and tokens and other
+    stuff I didn't really understand at the time, I just wanted things to go in order!
+
+    I don't know how I found it, but I probably Googled it and found the
+    <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">Shunting-yard algorithm</a>.
+
+    I won't go into detail of the algorithm here, but the basic idea of the algorithm was perfect
+    for me because it was simple to understand and implement. <br>
+
+    And to get an idea of what one of the earlier iterations of the calculator looked like check
+    <a href="https://github.com/royces9/calculator/blob/6a6de9348d5d882dd03974b7539f92a5b4791809/calcx.c">this</a>
+    out.
+
+    Apparently it compiled. I'm not sure how looking at it now, but hey, at least I've improved.
+
+    Things to note that I think are funny: all the #defines, how horrifying; ch, bch, bbch, bbbch,
+    ach, oh god why; consecutive ifs in some of the cases.
+
+    At this point, I had never used Git and thought it was the same thing as Github, so I was making changes,
+    uploading onto Google drive, and hoping I remembered to upload the changes if I was on a different computer.
+
+    I also numbered each update so that I could "save" previous versions, at one point I was writing the date
+    I made the changes in the source file.
+
+    I did this for a couple months, then realized I should learn Git, since that's the cool thing to do.<br>
+
+    After setting up Git and Github, development went much smoother, and opened up the path for more files,
+    since updating multiple files using the Google drive method is obviously not going to work very well.
+
+    The problem was that I didn't really know how to combine multiple files into one executable.
+
+    Up until this point, I was typing out (or running through history) <code>gcc calc.c -o calc</code> and
+    running the executable.
+
+    I was told about makefiles and got to learning how to make them.
+
+    I was able to make one after some trouble, but there were a lot of
+    issues with it until fairly recently.
+
+    But, for the time being, it worked, and that's all I cared about
+    at the time.<br>
+
+    After this point, I was confident in what I was doing (at a basic level, anyway), and was thinking
+    of lots of different functionality for my calculator.
+    
+    One of the more major changes, that took me quite a while to implement was the transition from scalars
+    to vectors and matrices.
+
+    For my research as a graduate student, a lot of the computational work was done using MATLAB, and so
+    I was very comfortable with writing "vectorized" code with MATLAB, and because of that, I felt that
+    it would be beneficial to put in matrices and vectors into my calculator.
+
+    The biggest issue that I was "scared" of was dynamic memory allocation.
+
+    <code>malloc</code> was just a scary concept up until that point, and I never thought about what was going
+    on with memory usage in my program.
+
+    Arrays were also allocated with some set amount, usually 1024, and I didn't realize it the time, but I
+    didn't understand pointers at all (it's just an address, how can it be so hard???).
+
+    I bit the bullet, and started using malloc, to allocate just the right amount of memory for each matrix.
+
+    This led to a big rewrite of almost every static allocated array to be a heap object instead.
+
+    This lead to an obvious next problem. Memory leaks.
+
+    While I was implementing my malloc changes, I put frees in as I felt necessary, but how would I check
+    for memory leaks?
+
+    I looked around and found Valgrind, which did exactly what I wanted.
+
+    There was a slight learning curve with Valgrind, but otherwise, it was pretty straight forward.
+
+    One thing that I didn't have for a while was the line numbers for the exact location of invalid
+    reads/writes, all I needed was the -g flag, but I didn't even know there was line number information
+    until a little bit after using it.<br>
+
+    The issue that went along with dynamic memory allocation were pointers.
+
+    Conceptually, the concept of a pointer is really simple, it's hard to imagine why anyone would screw it
+    up, but almost everyone does when first learning about pointers, and I was no exception.
+
+    Because each of my <code>struct matrix</code>'s were going to be large (more than 8 bytes), I decided to
+    pass them around as pointers instead of the raw struct. 
+
+    I actually flip-flopped on this decision for a little bit, but decided (hopefully correctly) that passing
+    them as pointers would be the best decision.
+
+    Changing a bunch of <code>double</code>s to <code>struct matrix *</code>s was the easy part, now making
+    sure I was actually accessing the correct matrix and its elements was some what difficult.
+    
+    I ended up making it through; Valgrind came in strong here, and I can confidently say that normal operation
+    has zero memory leaks and no invalid reads or writes.<br>
+
+    Past that, as I add features, I learn more about the C language, and other random little bits here and there.
+
+    <h4>Git</h4>
+    This project was the first opportunity for me to use Git.
+
+    Sadly, because I was the only one working on the project, I don't build good practices on pushing and what not,
+    but that's what practice is for right (yikes)?
+
+    Anyway, I learn the basics. Pull, commit, push. The trifecta.
+
+    There's some other commands you need to do to start out, like clone and init, but Github and Git are really helpful
+    with telling you what to do incase you need to do something "weird" (i.e. something that's not the trifecta).
+
+    When I started my WIP branch, I would also get merge conflicts which, I think, were good practice for handling
+    what was going on, although I didn't really understand what was going on until a little later, when I used
+    Git collaboratively.
+
+    As far as more advanced features, I don't really use them for this project, since an individual project doesn't
+    really need anything too fancy, except maybe branches.
+
+    <h4>Make</h4>
+    Just like Git, I'd say that this project didn't really get into understanding make, but it at least
+    introduced me to Make, and how to make a Makefile, as well as introduce the concept of partial compilation of
+    multiple files (although I didn't understand it until much later into the project).
+
+    My first makefile was very rudimentary, with explicitly typed out rules for each different source file, and
+    dependencies typed out by hand, it worked exactly how it should have.
+
+    Files only compiled when they needed to be, and otherwise updated when they should have (I think).
+
+    Things started to suck when I wanted to add new files, since I would, by hand, add a new rule, and its
+    dependencies to the makefile, at one point, I renamed some files too, so I had to remove them as well.
+
+    I ended up not changing it until I implemented a better makefile for one of my other projects, but once again,
+    this project ended up as a good intro to makefiles.
+
+    <h4>Valgrind and GDB</h4>
+    As mentioned earlier, after implementing <code>malloc</code>, Valgrind came in clutch to find memory leaks
+    and fix invalid reads/writes.
+
+    I only really use the basics for Valgrind, <code>--leak-checks=full</code> kinda stuff, but it's so general
+    that I use it for any other C project, which has been very helpful.<br>
+
+    Now GDB is useful too, I like using it, but I have to admit, it does take some getting used to, and I'm
+    still getting used to it.
+
+    I used it quite a bit in my operating systems class (CS143A), so I learned quite a bit about using GDB
+    through that class, and I use it when I can in my calculator project, but mentally, it's still easier
+    for me to debug with print statements and Valgrind (especially if I'm debugging a segfault).
+
+    This is of course, just practice, but it'll take time.
+    
+  </body>
+</html>
