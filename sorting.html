@@ -35,14 +35,194 @@
 
   The main motivation for this was twofold: I wanted to make my own visualization, since
   that's what got me into sorting algorithms in the first place, and I wanted to practice
-  some more algorithmic stuff, since I think it's good to have some of that knowledge.
+  some more algorithmic stuff, since I didn't have the coursework to supplement (I did
+  end up taking an algorithms course though, so having some knowledge of this stuff
+  helped a little).
 
   <h3>Things Learned and Problems</h3>
   I'll talk about implementing sorting algorithms, and then some of the
   auxillary knowledge that came with implementation.
 
   <h4>Sorting algorithms</h4>
+  All in all, this project really helped with my overall skills in problem solving.
 
-  <h4>Other stuff></h4>
+  I put an artificial limitation on myself to not look at any source/pseudo code for
+  any sorting algorithms.
+
+  To implement one, I would read a description of the algorithm, and look at the
+  visualization.
+
+  This ended up being a good exercise because sorting algorithms are so well studied,
+  so when I went back later to see specifically how some algorithms are implemented,
+  I made some correct choices, and other not so correct choices (My first implementation
+  of quicksort was not inplace!).
+
+  It was cool to see that merging using pointers for read/write heads, or Sedgewick's
+  quicksort were things that existed already. <br>
+
+  Implementing each separate algorithm was its own challenge, especially the different
+  ones, like heapsort, or the radix sorts, which had a much different way of thinking
+  than say, insertion sort or mergesort.
+
+  I also tried to implement my own different sorting algorithms, of the two I've done
+  they aren't particularly good.
+
+  One is an inplace-merge that merges using weaving, array elements are merged by
+  alternating array elements, then insertion sort is applied to the weaved array.
+
+  This can (with effort) be done in place, but runs in O(n^2) worst case, anyway,
+  it's way slower than heapsort.
+
+  It's stable though, so that's kinda cool right? <br>
+
+  The other implements a double-ended queue which prepends elements if it's smaller
+  than the first element, and appends elements if it's bigger than the last element.
+
+  If those two conditions aren't fulfilled, a new queue is made, this is repeated
+  until all the elements of the array are in a queue.
+
+  Queues are merged until the array is sorted.
+
+  I'm not sure on its complexity, but it's kind of slow.<br>
+
+  <h4>Other stuff</h4>
+  There's quite a few auxillary things I ended up doing for this project.
+
+  I'll split it by topic.
+
+  <h5>Make</h5>
+  Because I wanted each sort to be separate from each of the other sorts, I ended up
+  making a separate executable for each sorting algorithm.
+
+  I wrote a separate rule for each sorting algorithm, as well as a rule for each of the
+  source files that would be used for each algorithm (like the main function).
+
+  An issue that I ran into later on was that everytime I ran make, I would be recompiling
+  everything, which completely defeats one of the purposes make.
+
+  This initially wasn't an issue, but when I went to implement SDL visualizations, compile
+  times were taking too long for my liking.
+
+  Because of this, I first wanted to make sure only the things that needed to be compiled,
+  would be compiled.
+
+  Changing the makefile actually ended up being a massive undertaking, because I had to
+  redo the makefile to be written correctly, using a general rule for making each of the
+  sorting algorithms object files.
+
+  This was also when I actually started to understand what was going on in the compilation
+  proess for multi-file projects.
+
+  I had already made the make file for my calculator, but I didn't really have a good
+  understanding of what object files were, and what was going on with linking and all
+  that.
+
+  With this, I was able to understand to a better degree how the compilation process
+  works, as well as making a more general makefile for my project.
+
+  After I made the makefile for sorting, I went ahead and updated my makefile for my
+  calculator, and any other multifile projects I had.
+  
+  <h5>Python</h5>
+  For this section, I'll only talk about the test and automation scripts I used, and
+  not the visualization.
+
+  As I was making each of my sorting algorithms, I wanted to be able to compare them
+  against each other and see how they stood up against each other.
+
+  I figured that using Python would be a good starting project since the task at hand
+  was fairly simple.
+
+  I had my C programs print the execution time given the correct flag, and had
+  Python read it from stdout using subprocess.
+
+  The script could also rerun algorithms multiple times to give an average of
+  all the runs it ran.
+
+  I also wanted to be able to confirm that sorting was correct; that I wrote my program
+  correctly.
+
+  This was easy, since I have a flag in the C program that prints if the array is not
+  sorted correctly after sorting, so I just have subprocess check if there is something
+  in stdout.<br>
+
+  There are a few other little scripts like a plot script using matplotlib, and counting
+  functions that count the number of swaps or compares used, the concept is the same in
+  most of these other scripts; there's some flag that you can set in the C program that
+  is used in subprocess.
+
+  <h5>C</h5>
+  There were a few things about C that I learned through this project.
+
+  It was my first time using function pointers (for the comparison function),
+  using void pointers as a "general" pointer to any sort of data, and using pthreads.
+
+  I was actually not using the comparison function correctly for a little bit, I was
+  including the header file of the compare into the sort function's source, but I've
+  since fixed that.
+
+  The void pointers too, I changed to <code>char *</code> since pointer arithmetic with
+  void pointers is technically undefined behaviour by the standard.
+
+  This was my first time using pthreads, so I think the implementing threads in mergesort
+  was a good intro to pthreads, since I didn't have to think of any race conditions,
+  complicated lock situations, or other things people worry about with threads.
+
+  The hardest part by far, was being able to set up a variable amount of threads depending
+  on some run-time value; it wasn't hard that I had to think a lot, but I had to be careful
+  about making sure that I split arrays correctly.
+
+  But making these changes, and learning from them is part of the learning process right?
+  
+  <h5>Visualization</h5>
+  The visualization process actually took quite a while, and in two steps.
+
+  The bar visualization, I first implemented in Python using Tkinter.
+
+  As this was my first time going into visual stuff, I worked through Tkinter
+  docs and tutorials slowly.
+
+  It's a much different paradigm than, say, the shell like stuff I'd
+  been wokring on before.
+
+  One issue I had was figuring out how to get my program in C to do something
+  in Python.
+
+  I had used the subprocess module in my test scripts, so for the visualization,
+  I planned to print to stdout and have the Python script update accordingly.
+
+  I had issues with this because the speed of execution of the algorithm mismatched
+  the speed of Python, and I wanted to alter the C program as little as possible, so
+  I didn't want to tell it to wait.
+
+  The solution I came up with was to run the sort, and have it print to a file with the
+  state of the array every time a swap occured.
+
+  Once the sort is done, Python reads the file and updates the visualization by line,
+  it deletes the file once it's done sorting, and repeats the process.
+
+  The speed of the visualization of the sort is basically set by the number of swaps,
+  which leads to obvious problems, selection sort is always going to be the fastest,
+  when it's actual run time is slower.
+
+  Despite those issues, I felt that it was fine to at least understand what the sort
+  was doing. <br>
+
+  After a while, I took a little break and worked on a little side project which
+  involved SDL.
+
+  It was suprisingly easy to just get a rectangle on the screen: surprise, surprise,
+  that's exactly what these sort visualizations are anyway.
+
+  So I learned a little bit more about SDL and made some adaptions to the code I
+  wrote for my other project for this one.
+
+  After those changes, there was still a problem with the sort time not matching
+  the visualization time, so I also added a colour change to occur when a comparison
+  occurs to hopefully balance out the times a little bit, and that worked perfectly.
+
+  It also gave a very useful look into what was being compared against what, which
+  made sorts like quick sort pretty interesting, because of its constant comparison
+  to the pivot.
 
 </html>
